@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-form">
+            <div class="login-header">
+                <h2><i class="fas fa-graduation-cap"></i> School Management System</h2>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="dashboard-container" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button id="sidebarToggle" class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                                    </button>
+                <h1>School Management System</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span id="userWelcome">Welcome, User</span>
+                    <button id="logoutBtn" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar">
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" data-module="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="#" data-module="students"><i class="fas fa-user-graduate"></i> Student Management</a></li>
+                    <li><a href="#" data-module="employees"><i class="fas fa-users"></i> Employee Management</a></li>
+                    <li><a href="#" data-module="admissions"><i class="fas fa-user-plus"></i> Admission Management</a></li>
+                    <li><a href="#" data-module="fees"><i class="fas fa-dollar-sign"></i> Fee Management</a></li>
+                    <li><a href="#" data-module="attendance"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+                    <li><a href="#" data-module="timetable"><i class="fas fa-calendar-alt"></i> Timetable Management</a></li>
+                    <li><a href="#" data-module="courses"><i class="fas fa-book"></i> Course Management</a></li>
+                    <li><a href="#" data-module="assignments"><i class="fas fa-tasks"></i> Assignment Management</a></li>
+                    <li><a href="#" data-module="exams"><i class="fas fa-clipboard-list"></i> Exam & Grading</a></li>
+                    <li><a href="#" data-module="library"><i class="fas fa-book-open"></i> Library Management</a></li>
+                    <li><a href="#" data-module="transport"><i class="fas fa-bus"></i> Transportation</a></li>
+                    <li><a href="#" data-module="communications"><i class="fas fa-comments"></i> Communications</a></li>
+                    <li><a href="#" data-module="certificates"><i class="fas fa-certificate"></i> Certificates</a></li>
+                    <li><a href="#" data-module="learning"><i class="fas fa-laptop"></i> Learning Management</a></li>
+                    <li><a href="#" data-module="contacts"><i class="fas fa-address-book"></i> School Contacts</a></li>
+                    <li><a href="#" data-module="performance"><i class="fas fa-chart-line"></i> Performance Tracking</a></li>
+                    <li><a href="#" data-module="reports"><i class="fas fa-chart-bar"></i> Reports & Analytics</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Module -->
+            <div id="dashboardModule" class="module active">
+                <div class="module-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                </div>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+                        <div class="stat-info">
+                            <h3 id="totalStudents">0</h3>
+                            <p>Total Students</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-info">
+                            <h3 id="totalEmployees">0</h3>
+                            <p>Total Employees</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                        <div class="stat-info">
+                            <h3 id="todayAttendance">0%</h3>
+                            <p>Today's Attendance</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="stat-info">
+                            <h3 id="pendingFees">₹0</h3>
+                            <p>Pending Fees</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-charts">
+                    <div class="chart-container">
+                        <h3>Monthly Attendance</h3>
+                        <canvas id="attendanceChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Fee Collection</h3>
+                        <canvas id="feeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Management Module -->
+            <div id="studentsModule" class="module">
+                <div class="module-header">
+                    <h2><i class="fas fa-user-graduate"></i> Student Management</h2>
+                    <button id="addStudentBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Student
+                    </button>
+                </div>
+                <div class="module-content">
+                    <div class="search-filter">
+                        <input type="text" id="studentSearch" placeholder="Search students...">
+                        <select id="classFilter">
+                            <option value="">All Classes</option>
+                        </select>
+                        <select id="statusFilter">
+                            <option value="">All Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="table-container">
+                        <table id="studentsTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Name</th>
+                                    <th>Class</th>
+                                    <th>Phone</th>
+                                    <th>Parent Contact</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fee Management Module -->
+            <div id="feesModule" class="module">
+                <div class="module-header">
+                    <h2><i class="fas fa-dollar-sign"></i> Fee Management</h2>
+                    <button id="addFeeStructureBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Fee Structure
+                    </button>
+                </div>
+                <div class="module-content">
+                    <div class="fee-tabs">
+                        <button class="tab-btn active" data-tab="fee-structure">Fee Structure</button>
+                        <button class="tab-btn" data-tab="fee-payments">Fee Payments</button>
+                        <button class="tab-btn" data-tab="fee-reports">Fee Reports</button>
+                    </div>
+                    
+                    <div id="fee-structure" class="tab-content active">
+                        <div class="table-container">
+                            <table id="feeStructureTable" class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Class</th>
+                                        <th>Fee Type</th>
+                                        <th>Amount</th>
+                                        <th>Due Date</th>
+                                        <th>Academic Year</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div id="fee-payments" class="tab-content">
+                        <div class="search-filter">
+                            <input type="text" id="paymentSearch" placeholder="Search by student name or ID...">
+                            <select id="paymentStatusFilter">
+                                <option value="">All Status</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Overdue">Overdue</option>
+                            </select>
+                            <button id="recordPaymentBtn" class="btn btn-success">
+                                <i class="fas fa-plus"></i> Record Payment
+                            </button>
+                        </div>
+                        <div class="table-container">
+                            <table id="feePaymentsTable" class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Receipt No.</th>
+                                        <th>Student</th>
+                                        <th>Fee Type</th>
+                                        <th>Amount</th>
+                                        <th>Payment Date</th>
+                                        <th>Method</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Module -->
+            <div id="attendanceModule" class="module">
+                <div class="module-header">
+                    <h2><i class="fas fa-calendar-check"></i> Attendance Management</h2>
+                    <div class="attendance-controls">
+                        <input type="date" id="attendanceDate" value="">
+                        <select id="attendanceClass">
+                            <option value="">Select Class</option>
+                        </select>
+                        <button id="markAttendanceBtn" class="btn btn-primary">Mark Attendance</button>
+                    </div>
+                </div>
+                <div class="module-content">
+                    <div class="attendance-summary">
+                        <div class="summary-card present">
+                            <h3 id="presentCount">0</h3>
+                            <p>Present</p>
+                        </div>
+                        <div class="summary-card absent">
+                            <h3 id="absentCount">0</h3>
+                            <p>Absent</p>
+                        </div>
+                        <div class="summary-card late">
+                            <h3 id="lateCount">0</h3>
+                            <p>Late</p>
+                        </div>
+                        <div class="summary-card percentage">
+                            <h3 id="attendancePercentage">0%</h3>
+                            <p>Attendance Rate</p>
+                        </div>
+                    </div>
+                    <div id="attendanceList" class="attendance-list"></div>
+                </div>
+            </div>
+
+            <!-- Other modules will be similar structures -->
+            <!-- Add more modules here... -->
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Student Modal -->
+    <div id="studentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="studentModalTitle">Add Student</h3>
+                <span class="close">×</span>
+            </div>
+            <form id="studentForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="studentId">Student ID</label>
+                        <input type="text" id="studentId" name="student_id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="first_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="last_name" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date of Birth</label>
+                        <input type="date" id="dateOfBirth" name="date_of_birth">
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentClass">Class</label>
+                        <select id="studentClass" name="class_id" required>
+                            <option value="">Select Class</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencyContact">Emergency Contact</label>
+                        <input type="tel" id="emergencyContact" name="emergency_contact">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="parentName">Parent/Guardian Name</label>
+                        <input type="text" id="parentName" name="parent_guardian_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="parentPhone">Parent Phone</label>
+                        <input type="tel" id="parentPhone" name="parent_guardian_phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="parentEmail">Parent Email</label>
+                        <input type="email" id="parentEmail" name="parent_guardian_email">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('studentModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Fee Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Record Fee Payment</h3>
+                <span class="close">×</span>
+            </div>
+            <form id="paymentForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="paymentStudent">Student</label>
+                        <select id="paymentStudent" name="student_id" required>
+                            <option value="">Select Student</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentFeeStructure">Fee Type</label>
+                        <select id="paymentFeeStructure" name="fee_structure_id" required>
+                            <option value="">Select Fee Type</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="paymentAmount">Amount</label>
+                        <input type="number" id="paymentAmount" name="amount_paid" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentMethod">Payment Method</label>
+                        <select id="paymentMethod" name="payment_method" required>
+                            <option value="Cash">Cash</option>
+                            <option value="Card">Card</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="Online">Online</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="transactionId">Transaction ID</label>
+                        <input type="text" id="transactionId" name="transaction_id">
+                    </div>
+                    <div class="form-group">
+                        <label for="receiptNumber">Receipt Number</label>
+                        <input type="text" id="receiptNumber" name="receipt_number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="paymentRemarks">Remarks</label>
+                    <textarea id="paymentRemarks" name="remarks" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('paymentModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Record Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/students.js"></script>
+    <script src="js/fees.js"></script>
+    <script src="js/attendance.js"></script>
+</body>
+</html>
